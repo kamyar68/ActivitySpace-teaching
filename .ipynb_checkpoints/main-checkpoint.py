@@ -35,11 +35,11 @@ temp_DIRECTORY = NOTEBOOK_PATH / "output" / "temp"
 raster_DIRECTORY = NOTEBOOK_PATH / "output/raster"
 
 # Set your parameters
-home_file = DATA_DIRECTORY / "home20.shp"
-print (home_file)
-activity_file = DATA_DIRECTORY / "eep20.shp"
+#home_file = DATA_DIRECTORY / "home20.shp"
+#print (home_file)
+#activity_file = DATA_DIRECTORY / "eep20.shp"
 output_file = output_DIRECTORY /"Output.gpkg"
-route_file = DATA_DIRECTORY /"shortest_routes.shp"
+#route_file = DATA_DIRECTORY /"shortest_routes.shp"
 uid_field = 'uid'  # Replace with your actual uid field name
 D1 = 500  # Replace with your desired buffer distance for home location
 D2 = 200   # Replace with your desired buffer distance for activity points
@@ -143,7 +143,7 @@ def nb_withRoute(home_file, activity_file, routes_file, output_file, uid_field, 
 #nb_with_routes_osm(home_file, activity_file, output_file, uid_field, D1, D2)
 #nb_withRoute(home_file, activity_file, route_file, output_file, uid_field, D1, D2)
 #nb_noroute(home_file, activity_file, output_file, uid_field, D1, D2)
-def IREM():
+def IREM(home_file,activity_file,output_file,route_file, pixel_size):
     maxw = 30  # Replace with your actual maxw value
     poi = gpd.read_file(activity_file)
     nb= gpd.read_file(output_file)
@@ -203,7 +203,7 @@ def IREM():
     # Concatenate GeoDataFrames as rows and keep only specified fields
     concatenated_df = pd.concat([pointed_paths[fields_to_keep], home[fields_to_keep], pointed_nb[fields_to_keep]], ignore_index=True)
     concatenated_gdf = gpd.GeoDataFrame(concatenated_df, geometry='geometry')
-    print (concatenated_gdf.head())
+    #print (concatenated_gdf.head())
     #concatenated_gdf.to_file("D:/DeveloperZone/MyWorkScripts/ActivitySpaces/PurePython/output/temp/concat.shp")
     
     for uid in concatenated_gdf['uid'].unique():
@@ -219,7 +219,7 @@ def IREM():
             xmin, ymin, xmax, ymax = subset.total_bounds
     
             # Set pixel size (adjust as needed)
-            pixel_size = 50
+            #pixel_size = 50
     
             # Create an empty raster
             cols = int((xmax - xmin) / pixel_size)
@@ -253,7 +253,7 @@ def IREM():
                 dst.write(raster_data, 1)
     
     print("IDW rasters created successfully.")
-    print (nb.head())
+    #print (nb.head())
     # Iterate through each raster file in the folder
     for raster_filename in os.listdir(raster_DIRECTORY):
         if raster_filename.endswith('.tif'):
@@ -263,7 +263,7 @@ def IREM():
     
             # Filter the polygon GeoDataFrame for the current UID
             polygon_subset = nb[nb['uid'] == uid]
-            print (polygon_subset)
+            #print (polygon_subset)
     
             # Load the raster
             raster_path =  raster_DIRECTORY / f'{raster_filename}'
@@ -283,4 +283,4 @@ def IREM():
             with rasterio.open(raster_path, "w", **out_meta) as dest:
                 dest.write(out_image)
     
-    print("Raster clipping completed successfully.")
+    print("IREM is completed")
