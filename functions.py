@@ -1,7 +1,5 @@
 import geopandas as gpd
 from shapely.geometry import LineString, Point
-import pandas as pd
-
 
 def generate_points_along_routes(input_gdf, output_path, distance_interval=30):
     """
@@ -15,10 +13,10 @@ def generate_points_along_routes(input_gdf, output_path, distance_interval=30):
     Returns:
     - geopandas.GeoDataFrame: GeoDataFrame containing points along routes.
     """
-    # Create an empty GeoDataFrame for the output
-    points_gdf = gpd.GeoDataFrame(columns=input_gdf.columns)
-    for index, row in input_gdf.iterrows():
+    # Create an empty list to store rows
+    points_rows = []
 
+    for index, row in input_gdf.iterrows():
         # Get the route geometry
         route_geometry = row['geometry']
 
@@ -32,20 +30,19 @@ def generate_points_along_routes(input_gdf, output_path, distance_interval=30):
 
             while current_distance < length:
                 point_on_route = route_geometry.interpolate(current_distance)
-                #print(f"Pointing index: {index}/{len(input_gdf)}, D is now {current_distance}")
+
                 # Create a new row for each point
                 new_row = row.copy()
                 new_row['geometry'] = point_on_route
-                points_gdf = pd.concat([points_gdf, new_row], ignore_index=True)
-                points_gdf = gpd.GeoDataFrame(points_gdf, geometry='geometry')
+                points_rows.append(new_row)
 
                 current_distance += distance_interval
 
-    # Convert the output GeoDataFrame to the same CRS as the input
-    points_gdf.crs = input_gdf.crs
+    # Create the GeoDataFrame from the list of rows
+    points_gdf = gpd.GeoDataFrame(points_rows, geometry='geometry', crs=input_gdf.crs)
 
     # Save the resulting GeoDataFrame to a file
-    points_gdf.to_file(output_path)
+    #points_gdf.to_file(output_path)
 
     return points_gdf
 
@@ -62,8 +59,8 @@ def generate_points_along_polygon(input_gdf, output_path, distance_interval=30):
     Returns:
     - geopandas.GeoDataFrame: GeoDataFrame containing points along polygon outlines.
     """
-    # Create an empty GeoDataFrame for the output
-    points_gdf = gpd.GeoDataFrame(columns=input_gdf.columns)
+    # Create an empty list to store rows
+    points_rows = []
 
     for index, row in input_gdf.iterrows():
         # Get the polygon geometry
@@ -83,12 +80,12 @@ def generate_points_along_polygon(input_gdf, output_path, distance_interval=30):
                 # Create a new row for each point
                 new_row = row.copy()
                 new_row['geometry'] = Point(point_on_outline.x, point_on_outline.y)
-                points_gdf = points_gdf.append(new_row, ignore_index=True)
+                points_rows.append(new_row)
 
                 current_distance += distance_interval
 
-    # Convert the output GeoDataFrame to the same CRS as the input
-    points_gdf.crs = input_gdf.crs
+    # Create the GeoDataFrame from the list of rows
+    points_gdf = gpd.GeoDataFrame(points_rows, geometry='geometry', crs=input_gdf.crs)
 
     # Save the resulting GeoDataFrame to a file
     #points_gdf.to_file(output_path)

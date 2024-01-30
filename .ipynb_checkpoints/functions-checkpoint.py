@@ -1,6 +1,5 @@
 import geopandas as gpd
 from shapely.geometry import LineString, Point
-import pandas as pd
 
 
 def generate_points_along_routes(input_gdf, output_path, distance_interval=30):
@@ -32,12 +31,11 @@ def generate_points_along_routes(input_gdf, output_path, distance_interval=30):
 
             while current_distance < length:
                 point_on_route = route_geometry.interpolate(current_distance)
-                #print(f"Pointing index: {index}/{len(input_gdf)}, D is now {current_distance}")
+                print(f"Pointing index: {index}/{len(input_gdf)}, D is now {current_distance}")
                 # Create a new row for each point
                 new_row = row.copy()
                 new_row['geometry'] = point_on_route
-                points_gdf = pd.concat([points_gdf, new_row], ignore_index=True)
-                points_gdf = gpd.GeoDataFrame(points_gdf, geometry='geometry')
+                points_gdf = points_gdf.append(new_row, ignore_index=True)
 
                 current_distance += distance_interval
 
@@ -45,7 +43,7 @@ def generate_points_along_routes(input_gdf, output_path, distance_interval=30):
     points_gdf.crs = input_gdf.crs
 
     # Save the resulting GeoDataFrame to a file
-    points_gdf.to_file(output_path)
+    #points_gdf.to_file(output_path)
 
     return points_gdf
 

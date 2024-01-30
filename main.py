@@ -253,7 +253,7 @@ def IREM():
                 dst.write(raster_data, 1)
     
     print("IDW rasters created successfully.")
-    print (nb.head())
+    #print (nb.head())
     # Iterate through each raster file in the folder
     for raster_filename in os.listdir(raster_DIRECTORY):
         if raster_filename.endswith('.tif'):
@@ -263,7 +263,7 @@ def IREM():
     
             # Filter the polygon GeoDataFrame for the current UID
             polygon_subset = nb[nb['uid'] == uid]
-            print (polygon_subset)
+            #print (polygon_subset)
     
             # Load the raster
             raster_path =  raster_DIRECTORY / f'{raster_filename}'
@@ -283,4 +283,4 @@ def IREM():
             with rasterio.open(raster_path, "w", **out_meta) as dest:
                 dest.write(out_image)
     
-    print("Raster clipping completed successfully.")
+    print("IREM is completed")
