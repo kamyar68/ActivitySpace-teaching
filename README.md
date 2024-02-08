@@ -2,7 +2,7 @@
 
 The files in this repository are for educational purpose.
 
-The notebook walks the students step-by-step through through the process of creating an activity space using the home range model and IREM.
+The notebook walks the students step-by-step through through the process of creating an activity space using the home range model and IREM. The notebook imports the scripts from the main.py file. The main, used functions from functions.py file.
 
 
 
