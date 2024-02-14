@@ -174,9 +174,9 @@ def IREM(home_file,activity_file,output_file,route_file, pixel_size):
         mod = row['tmod']
         w1 = row['w']
     
-        if mod == 'walking':
+        if mod == 'walk':
             rw = math.sqrt(w1 * w2)
-        elif mod == 'bike':
+        elif mod == 'bicycle':
             rw = (math.sqrt(w1 * w2)) / 3.4
         else:
             rw = (math.sqrt(w1 * w2)) / 10.0
