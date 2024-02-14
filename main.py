@@ -91,10 +91,10 @@ def nb_withRoute(home_file, activity_file, routes_file, output_file, uid_field, 
     # Read home and activity shapefiles
     gdf_home = gpd.read_file(home_file)
     gdf_activity = gpd.read_file(activity_file)
+    gdf_activity = gdf_activity[gdf_activity['dist'] > D3]
     gdf_routes = gpd.read_file(routes_file)
     gdf_activity=gdf_activity.to_crs("EPSG:3067")
     gdf_home=gdf_home.to_crs("EPSG:3067")
-    gdf_home = gdf_home[gdf_home['dist'] > D3]
     gdf_routes=gdf_routes.to_crs("EPSG:3067")
 
     # Merge based on the common uid field
