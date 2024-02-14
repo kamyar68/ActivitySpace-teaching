@@ -201,7 +201,7 @@ def IREM(home_file,activity_file,output_file,route_file, pixel_size):
     fields_to_keep = ['uid', 'w', 'geometry']
     
     # Concatenate GeoDataFrames as rows and keep only specified fields
-    concatenated_df = pd.concat([pointed_paths[fields_to_keep], home[fields_to_keep], pointed_nb[fields_to_keep]], ignore_index=True)
+    concatenated_df = pd.concat([pointed_paths[fields_to_keep], home[fields_to_keep], poi[fields_to_keep], pointed_nb[fields_to_keep]], ignore_index=True)
     concatenated_gdf = gpd.GeoDataFrame(concatenated_df, geometry='geometry')
     #print (concatenated_gdf.head())
     #concatenated_gdf.to_file("D:/DeveloperZone/MyWorkScripts/ActivitySpaces/PurePython/output/temp/concat.shp")
